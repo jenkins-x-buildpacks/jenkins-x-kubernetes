@@ -1,4 +1,4 @@
 modules:
 - name: classic
   gitUrl: https://github.com/jenkins-x-buildpacks/jenkins-x-classic.git
-  ref: master
+  gitRef: master
