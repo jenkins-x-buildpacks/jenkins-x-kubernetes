@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.service.name }}
+  name: {{ .Values.service.name }}
+{{- else }}
+  name: {{ template "fullname" . }}
+{{- end }}
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+{{- if .Values.service.annotations }}
+  annotations:
+{{ toYaml .Values.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - name: app
+    port: {{ .Values.service.extAppPort }}
+    targetPort: {{ .Values.service.appPort }}
+    protocol: TCP
+  - name: admin
+    port: {{ .Values.service.extAdminPort }}
+    targetPort: {{ .Values.service.adminPort }}
+    protocol: TCP
+    name: http
+  selector:
+    app: {{ template "fullname" . }}

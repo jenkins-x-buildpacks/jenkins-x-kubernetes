@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+BUILD_DIR=$1
+
+# Exit early if app is clearly not Scala SBT based project.
+if [ ! -f $BUILD_DIR/build.sbt ] && [ ! -f $BUILD_DIR/project/plugins.sbt ]; then
+  exit 1
+fi
+
+echo Scala SBT
