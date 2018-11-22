@@ -1,6 +1,6 @@
 extends:
   import: classic
-  file: maven/pipeline.yaml
+  file: go/pipeline.yaml
 pipelines:
   pullRequest:
     build:

@@ -1,6 +1,6 @@
 extends:
   import: classic
-  file: maven/pipeline.yaml
+  file: scala/pipeline.yaml
 pipelines:
   pullRequest:
     build:
