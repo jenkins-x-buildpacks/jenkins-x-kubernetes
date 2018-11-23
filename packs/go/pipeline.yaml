@@ -25,8 +25,10 @@ pipelines:
       - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
     promote:
       steps:
-      - sh: jx step changelog --version v\$(cat VERSION)
-      - comment: release the helm chart
-        sh: jx step helm release
-      - comment: promote through all 'Auto' promotion Environments
-        sh: jx promote -b --all-auto --timeout 1h --version \$(cat VERSION)
+      - dir: /home/jenkins/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/REPLACE_ME_APP_NAME
+        steps:
+        - sh: jx step changelog --version v\$(cat VERSION)
+        - comment: release the helm chart
+          sh: jx step helm release
+        - comment: promote through all 'Auto' promotion Environments
+          sh: jx promote -b --all-auto --timeout 1h --version \$(cat VERSION)
