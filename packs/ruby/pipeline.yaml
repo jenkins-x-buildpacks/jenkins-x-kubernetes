@@ -21,6 +21,11 @@ pipelines:
         - sh: jx preview --app $APP_NAME --dir ../..
 
   release:
+    setVersion:
+      steps:
+      - sh: echo \$(jx-release-version) > VERSION
+        comment: so we can retrieve the version in later steps
+      - sh: jx step tag --version \$(cat VERSION)
     build:
       steps:
       - sh: docker build -t $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION) .
