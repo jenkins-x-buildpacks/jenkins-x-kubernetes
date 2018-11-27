@@ -11,7 +11,7 @@ else ifeq ($(OS),Linux)
 	sed -i -e "s|repository: .*|repository: $(DOCKER_REGISTRY)\/REPLACE_ME_ORG\/REPLACE_ME_APP_NAME|" values.yaml
 	sed -i -e "s/tag: .*/tag: $(PREVIEW_VERSION)/" values.yaml
 else
-	echo "platfrom $(OS) not supported to release from"
+	echo "platform $(OS) not supported to release from"
 	exit -1
 endif
 	echo "  version: $(PREVIEW_VERSION)" >> requirements.yaml
