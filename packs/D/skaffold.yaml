@@ -1,25 +1,24 @@
-apiVersion: skaffold/v1alpha2
+apiVersion: skaffold/v1beta1
 kind: Config
 build:
+  artifacts:
+  - image: changeme
+    context: .
+    docker: {}
   tagPolicy:
     envTemplate:
-      template: "{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME:{{.VERSION}}"
-  artifacts:
-  - imageName: changeme
-    workspace: .
-    docker: {}
+      template: '{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME:{{.VERSION}}'
   local: {}
 deploy:
-  kubectl:
-    manifests:
+  kubectl: {}
 profiles:
 - name: dev
   build:
-    tagPolicy:
-      envTemplate:
-        template: "{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME:{{.DIGEST_HEX}}"
     artifacts:
     - docker: {}
+    tagPolicy:
+      envTemplate:
+        template: '{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME:{{.DIGEST_HEX}}'
     local: {}
   deploy:
     helm:
@@ -27,5 +26,5 @@ profiles:
       - name: REPLACE_ME_APP_NAME
         chartPath: charts/REPLACE_ME_APP_NAME
         setValueTemplates:
-          image.repository: "{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME"
-          image.tag: "{{.TAG}}"
+          image.repository: '{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME'
+          image.tag: '{{.TAG}}'
