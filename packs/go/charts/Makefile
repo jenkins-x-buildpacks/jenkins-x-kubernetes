@@ -33,11 +33,11 @@ release: clean
 tag:
 ifeq ($(OS),Darwin)
 	sed -i "" -e "s/version:.*/version: $(VERSION)/" Chart.yaml
-	sed -i "" -e "s/tag: .*/tag: $(VERSION)/" values.yaml
+	sed -i "" -e "s/tag:.*/tag: $(VERSION)/" values.yaml
 else ifeq ($(OS),Linux)
 	sed -i -e "s/version:.*/version: $(VERSION)/" Chart.yaml
-	sed -i -e "s|repository: .*|repository: $(DOCKER_REGISTRY)\/REPLACE_ME_ORG\/$(NAME)|" values.yaml
-	sed -i -e "s/tag: .*/tag: $(VERSION)/" values.yaml
+	sed -i -e "s|repository:.*|repository: $(DOCKER_REGISTRY)\/REPLACE_ME_ORG\/$(NAME)|" values.yaml
+	sed -i -e "s/tag:.*/tag: $(VERSION)/" values.yaml
 else
 	echo "platfrom $(OS) not supported to tag with"
 	exit -1
