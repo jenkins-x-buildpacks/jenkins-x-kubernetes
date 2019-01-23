@@ -5,8 +5,8 @@ build:
     envTemplate:
       template: "{{.DOCKER_REGISTRY}}/REPLACE_ME_ORG/REPLACE_ME_APP_NAME:{{.VERSION}}"
   artifacts:
-  - imageName: changeme
-    workspace: .
+  - image: changeme
+    context: .
     docker: {}
   local: {}
 deploy:
