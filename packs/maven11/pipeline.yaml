@@ -1,0 +1,5 @@
+extends:
+  file: ../maven/pipeline.yaml
+agent:
+  label: jenkins-maven-java11
+  container: maven
