@@ -1,7 +1,9 @@
 extends:
   import: classic
   file: pipeline.yaml
-
+agent:
+  label: jenkins-go
+  container: go
 pipelines:
   release:
     build:
