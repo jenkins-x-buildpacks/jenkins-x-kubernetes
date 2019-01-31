@@ -25,7 +25,7 @@ pipelines:
       steps:
       - dir: ./charts/REPLACE_ME_APP_NAME
         steps:
-        - sh: jx step changelog --version v\$(cat ../../VERSION)
+        - sh: jx step changelog --batch-mode --version v\$(cat ../../VERSION)
         - comment: release the helm chart
           sh: jx step helm release
         - comment: promote through all 'Auto' promotion Environments
