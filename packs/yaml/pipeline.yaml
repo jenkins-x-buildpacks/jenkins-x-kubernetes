@@ -2,8 +2,8 @@ extends:
   import: classic
   file: pipeline.yaml
 agent:
-  label: jenkins-go
-  container: go
+  label: jenkins-maven
+  container: maven
 pipelines:
   pullRequest:
     build:
