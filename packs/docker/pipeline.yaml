@@ -12,10 +12,6 @@ pipelines:
           name: skaffold-version
         - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
           name: container-build
-        - dir: charts/REPLACE_ME_APP_NAME
-          steps:
-            - sh: jx step helm build
-              name: helm-build
 
   release:
     setVersion:
@@ -28,26 +24,12 @@ pipelines:
           name: skaffold-version
         - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
           name: container-build
-        - dir: charts/REPLACE_ME_APP_NAME
-          steps:
-            - sh: jx step helm build --verbose
-              name: helm-build
-              comment: Let's build chart
-            - sh: jx step tag --version \$(cat ../../VERSION) 
-              name: tag-version
-              comment: Let's create tag in Git
+        - sh: jx step tag --version \$(cat ../../VERSION)
+          name: tag-version
+          comment: Let's create tag in Git
     promote:
       steps:
-      - dir: charts/REPLACE_ME_APP_NAME
-        steps:
-        - sh: jx step changelog --version v\$(cat ../../VERSION)
-          name: changelog
-        - comment: Let's release the helm chart
-          sh: jx step helm release
-          name: helm-release
-        - comment: Let's promote through all 'Auto' promotion Environments
-          sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
-          name: jx-promote
-
+      - sh: jx step changelog --version v\$(cat ../../VERSION)
+        name: changelog
 
 
