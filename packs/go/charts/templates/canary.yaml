@@ -1,0 +1,44 @@
+{{- if eq .Release.Namespace "jx-production" }}
+{{- if eq .Values.canary.enable "true" }}
+apiVersion: flagger.app/v1alpha2
+kind: Canary
+metadata:
+  # canary name must match deployment name
+  name: {{ template "fullname" . }}
+spec:
+  # deployment reference
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ template "fullname" . }}
+  progressDeadlineSeconds: 60
+  service:
+    # container port
+    port: {{.Values.service.internalPort}}
+{{- if .Values.canary.service.gateways }}
+    # Istio gateways (optional)
+    gateways:
+{{ toYaml .Values.canary.service.gateways | indent 4 }}
+{{- end }}
+{{- if .Values.canary.service.hosts }}
+    # Istio virtual service host names (optional)
+    hosts:
+{{ toYaml .Values.canary.service.hosts | indent 4 }}
+{{- end }}
+  canaryAnalysis:
+    # schedule interval (default 60s)
+    interval: {{ .Values.canary.canaryAnalysis.interval }}
+    # max number of failed metric checks before rollback
+    threshold: {{ .Values.canary.canaryAnalysis.threshold }}
+    # max traffic percentage routed to canary
+    # percentage (0-100)
+    maxWeight: {{ .Values.canary.canaryAnalysis.maxWeight }}
+    # canary increment step
+    # percentage (0-100)
+    stepWeight: {{ .Values.canary.canaryAnalysis.stepWeight }}
+{{- if .Values.canary.canaryAnalysis.metrics }}
+    metrics:
+{{ toYaml .Values.canary.canaryAnalysis.metrics | indent 4 }}
+{{- end }}
+{{- end }}
+{{- end }}
