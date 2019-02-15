@@ -1,5 +1,5 @@
-{{- if eq .Release.Namespace "jx-production" }}
 {{- if eq .Values.canary.enable "true" }}
+{{- if eq .Release.Namespace .Values.canary.namespace }}
 apiVersion: flagger.app/v1alpha2
 kind: Canary
 metadata:
