@@ -36,7 +36,10 @@ canary:
   enable: "false"
   namespace: jx-production
   service:
-    hosts: {}
+    hosts:
+    - app.example.com
+    gateways:
+    - jx-gateway.istio-system.svc.cluster.local
   canaryAnalysis:
     interval: 60s
     threshold: 5

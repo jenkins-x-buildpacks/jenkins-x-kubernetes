@@ -16,12 +16,12 @@ spec:
     # container port
     port: {{.Values.service.internalPort}}
 {{- if .Values.canary.service.gateways }}
-    # Istio gateways (optional)
+    # Istio gateways
     gateways:
 {{ toYaml .Values.canary.service.gateways | indent 4 }}
 {{- end }}
 {{- if .Values.canary.service.hosts }}
-    # Istio virtual service host names (optional)
+    # Istio virtual service host names
     hosts:
 {{ toYaml .Values.canary.service.hosts | indent 4 }}
 {{- end }}
