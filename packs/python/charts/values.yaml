@@ -24,7 +24,7 @@ resources:
 ingress:
   enabled: false
 canary:
-  enable: "false"
+  enable: false
   namespace: jx-production
   service:
     hosts:

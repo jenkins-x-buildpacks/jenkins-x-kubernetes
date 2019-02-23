@@ -33,7 +33,7 @@ readinessProbe:
   timeoutSeconds: 1
 terminationGracePeriodSeconds: 10
 canary:
-  enable: "false"
+  enable: false
   namespace: jx-production
   service:
     hosts:

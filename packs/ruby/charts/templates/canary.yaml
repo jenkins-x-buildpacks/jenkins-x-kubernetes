@@ -1,4 +1,4 @@
-{{- if eq .Values.canary.enable "true" }}
+{{- if .Values.canary.enable }}
 {{- if eq .Release.Namespace .Values.canary.namespace }}
 apiVersion: flagger.app/v1alpha2
 kind: Canary

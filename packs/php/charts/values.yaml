@@ -17,7 +17,7 @@ resources:
     cpu: 100m
     memory: 128Mi
 canary:
-  enable: "false"
+  enable: false
   namespace: jx-production
   service:
     hosts:
