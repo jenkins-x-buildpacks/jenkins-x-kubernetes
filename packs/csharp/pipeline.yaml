@@ -28,11 +28,8 @@ pipelines:
   release:
     setVersion:
       steps:
-      - sh: echo \$(jx-release-version) > VERSION
-        name: next-version
-        comment: so we can retrieve the version in later steps
-      - sh: jx step tag --version \$(cat VERSION)
-        name: tag-version
+      - sh: jx step next-version --use-git-tag-only --tag
+        name: tag-with-new-version
     build:
       steps:
       - sh: docker build -t $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION) .
