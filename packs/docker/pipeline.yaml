@@ -16,8 +16,8 @@ pipelines:
   release:
     setVersion:
       steps:
-      - sh: echo \$(jx-release-version) > VERSION
-        comment: so we can retrieve the version in later steps
+      - sh: jx step next-version --use-git-tag-only --tag
+        name: tag-with-new-version
     build:
       steps:
         - sh: skaffold version
