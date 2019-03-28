@@ -24,8 +24,6 @@ pipelines:
           name: tag-with-new-version
     build:
       steps:
-        - sh: skaffold version
-          name: skaffold-version
         - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
           name: container-build
         - dir: charts/REPLACE_ME_APP_NAME
@@ -33,9 +31,6 @@ pipelines:
             - sh: jx step helm build --verbose
               name: helm-build
               comment: Let's build chart
-            - sh: jx step tag --version \$(cat ../../VERSION) 
-              name: tag-version
-              comment: Let's create tag in Git
     promote:
       steps:
       - dir: charts/REPLACE_ME_APP_NAME

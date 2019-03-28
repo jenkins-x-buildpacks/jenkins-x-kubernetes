@@ -25,9 +25,6 @@ pipelines:
             - sh: jx step helm build --verbose
               name: helm-build
               comment: Let's build chart
-            - sh: jx step tag --version \$(cat ../../VERSION)
-              name: tag-version
-              comment: Let's create tag in Git
     promote:
       steps:
         - dir: charts/REPLACE_ME_APP_NAME

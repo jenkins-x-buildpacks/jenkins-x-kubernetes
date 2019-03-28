@@ -20,13 +20,8 @@ pipelines:
         name: tag-with-new-version
     build:
       steps:
-        - sh: skaffold version
-          name: skaffold-version
         - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
           name: container-build
-        - sh: jx step tag --version \$(cat VERSION)
-          name: tag-version
-          comment: Let's create tag in Git
     promote:
       steps:
       - sh: jx step changelog --version v\$(cat VERSION)
