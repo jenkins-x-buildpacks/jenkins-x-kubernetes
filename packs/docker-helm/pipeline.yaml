@@ -20,7 +20,7 @@ pipelines:
   release:
     setVersion:
       steps:
-        - sh: jx step next-version --use-git-tag-only --tag=false
+        - sh: jx step next-version --use-git-tag-only
           name: tag-with-new-version
     build:
       steps:
