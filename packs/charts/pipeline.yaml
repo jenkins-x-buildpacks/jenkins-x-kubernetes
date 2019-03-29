@@ -1,6 +1,6 @@
 agent:
   label: jenkins-jx-base
-  container: jx-base
+  container: go
 pipelines:
   pullRequest:
     build:
