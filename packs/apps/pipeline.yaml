@@ -15,6 +15,8 @@ pipelines:
   release:
     build:
       steps:
+        - sh: make build
+          name: build
         - dir: charts/REPLACE_ME_APP_NAME
           steps:
           - sh: make tag
