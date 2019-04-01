@@ -1,0 +1,15 @@
+agent:
+  label: builder-go
+  container: go
+pipelines:
+  pullRequest:
+    build:
+      steps:
+        - sh: echo PR
+          name: dummy-build
+
+  release:
+    build:
+      steps:
+        - sh: echo Release
+          name: dummy-release
