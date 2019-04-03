@@ -17,3 +17,4 @@ spec:
     name: http
   selector:
     app: {{ template "fullname" . }}
+{{- end }}

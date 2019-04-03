@@ -1,3 +1,5 @@
+{{- if .Values.knativeDeploy }}
+{{- else }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,3 +19,4 @@ spec:
     name: {{ .Values.service.name }}
   selector:
     app: {{ template "fullname" . }}
+{{- end }}

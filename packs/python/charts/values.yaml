@@ -6,6 +6,13 @@ image:
   repository: draft
   tag: dev
   pullPolicy: IfNotPresent
+
+# define environment variables here as a map of key: value
+env:
+
+# enable this flag to use knative serve to deploy the app
+knativeDeploy: false
+
 service:
   name: REPLACE_ME_APP_NAME
   type: ClusterIP
@@ -23,3 +30,14 @@ resources:
     memory: 128Mi
 ingress:
   enabled: false
+probePath: /
+livenessProbe:
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+readinessProbe:
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+terminationGracePeriodSeconds: 10
