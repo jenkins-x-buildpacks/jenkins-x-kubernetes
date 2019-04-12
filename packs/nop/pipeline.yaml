@@ -1,0 +1,17 @@
+agent:
+  label: builder-go
+  container: gcr.io/jenkinsxio/builder-go:0.1.339
+pipelines:
+  pullRequest:
+    build:
+      steps:
+        - sh: echo PR
+          name: dummy-build
+          container: gcr.io/jenkinsxio/builder-go:0.1.339
+
+  release:
+    build:
+      steps:
+        - sh: echo Release
+          name: dummy-release
+          container: gcr.io/jenkinsxio/builder-go:0.1.339

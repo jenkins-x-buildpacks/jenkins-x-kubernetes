@@ -1,0 +1,49 @@
+agent:
+  label: builder-go
+  container: go
+env:
+  - name: GIT_COMMITTER_EMAIL
+    value: jenkins-x@googlegroups.com
+  - name: GIT_COMMITTER_NAME
+    value: jenkins-x-bot
+  - name: GIT_AUTHOR_EMAIL
+    value: jenkins-x@googlegroups.com
+  - name: GIT_AUTHOR_NAME
+    value: jenkins-x-bot
+pipelines:
+  pullRequest:
+    build:
+      steps:
+        - sh: make build
+          name: build
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+          - sh: jx step helm build
+            name: helm-build
+
+  release:
+    build:
+      steps:
+        - sh: make build
+          name: build
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+          - sh: make tag
+            name: tag
+          - sh: jx step helm build
+            name: helm-build
+          - comment: Version the helm chart
+            sh: jx step helm version
+            name: helm-version
+    promote:
+      steps:
+        - sh: make release
+          name: release
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+          - comment: Let's release the helm chart
+            sh: jx step helm release
+            name: helm-release
+          - comment: Let's promote through all 'Auto' promotion Environments
+            sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+            name: jx-promote

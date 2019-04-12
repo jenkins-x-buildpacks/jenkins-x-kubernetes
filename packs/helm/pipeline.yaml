@@ -1,0 +1,42 @@
+extends:
+  import: classic
+  file: pipeline.yaml
+agent:
+  label: jenkins-maven
+  container: maven
+pipelines:
+  pullRequest:
+    build:
+      steps:
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+            - sh: jx step helm build
+              name: helm-build
+
+  release:
+    setVersion:
+      steps:
+        - sh: jx step next-version --use-git-tag-only --tag
+          name: tag-with-new-version
+    build:
+      steps:
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+            - sh: jx step helm build --verbose
+              name: helm-build
+              comment: Let's build chart
+    promote:
+      steps:
+        - dir: charts/REPLACE_ME_APP_NAME
+          steps:
+            - sh: jx step changelog --version v\$(cat ../../VERSION)
+              name: changelog
+            - comment: Let's release the helm chart
+              sh: jx step helm release
+              name: helm-release
+            - comment: Let's promote through all 'Auto' promotion Environments
+              sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+              name: jx-promote
+
+
+
