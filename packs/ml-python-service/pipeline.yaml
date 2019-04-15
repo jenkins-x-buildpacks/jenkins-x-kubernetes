@@ -57,4 +57,4 @@ pipelines:
     - groovy: always
       when: "!prow"
       steps:
-- groovy: "cleanWs()"
+        - groovy: "cleanWs()"
