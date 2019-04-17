@@ -39,8 +39,8 @@ pipelines:
       steps:
       - sh: python -m pip install flake8 && flake8
 #      - sh: python -m pip install pytest hypothesis && pytest
-      - sh: env
-      - sh: ls -la ~
+      - sh: cat ~/.gitconfig
+      - sh: cat ~/.git-credentials
       - sh: python app.py
   post:
     steps:
