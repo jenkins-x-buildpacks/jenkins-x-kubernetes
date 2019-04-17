@@ -38,7 +38,7 @@ pipelines:
     build:
       steps:
       - sh: python -m pip install flake8 && flake8
-      - sh: python -m pip install pytest hypothesis && pytest
+#      - sh: python -m pip install pytest hypothesis && pytest
       - sh: env
       - sh: ls -la ~
       - sh: python app.py
