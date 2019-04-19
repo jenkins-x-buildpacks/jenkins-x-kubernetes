@@ -7,16 +7,7 @@ pipelines:
       steps:
       - sh: python -m pip install flake8 && flake8
       - sh: python -m pip install pytest hypothesis && pytest
-      - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
-    postBuild:
-      steps:
-      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
-    promote:
-      steps:
-      - dir: ./charts/preview
-        steps:
-        - sh: make preview
-        - sh: jx preview --app $APP_NAME --dir ../..
+      - sh: python app.py
   release:
     setup:
       steps:
@@ -38,10 +29,22 @@ pipelines:
     build:
       steps:
       - sh: python -m pip install flake8 && flake8
-#      - sh: python -m pip install pytest hypothesis && pytest
-      - sh: python --version
-      - sh: cat ~/.git-credentials
+      # - sh: python -m pip install pytest hypothesis && pytest
       - sh: python app.py
+      - sh: >
+          export TARGET_SERVICE=`echo $APP_NAME | sed -Ee s/-training$/-service/` &&      # Target App with same prefix but -service suffix
+          export GIT_PROVIDER=`jx repo -qub | grep -oP '(^https?:\/\/[a-zA-Z\d-\.]+)'` && # https://github.com or other domain
+          export TARGET_SERVICE_REPO=`echo $GIT_PROVIDER/$REPO_OWNER/$TARGET_SERVICE` &&  # Target repo for storing model
+          git clone $TARGET_SERVICE_REPO &&
+          cd $TARGET_SERVICE &&
+          git checkout syncmodel || git checkout -b syncmodel &&
+          git lfs install &&
+          git lfs track '*.onnx' &&
+          cp ../*.onnx . &&
+          git add *.onnx &&
+          git commit -m 'feat: New model trained' &&
+          git push --set-upstream origin syncmodel &&
+          jx create pullrequest -b -t 'New model trained'
   post:
     steps:
     - groovy: always
