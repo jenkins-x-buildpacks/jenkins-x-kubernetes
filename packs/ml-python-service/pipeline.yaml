@@ -1,6 +1,6 @@
 agent:
-  label: jenkins-python
-  container: python
+  label: jenkins-python37
+  container: python37
 pipelines:
   pullRequest:
     build:
