@@ -5,9 +5,14 @@ pipelines:
   pullRequest:
     build:
       steps:
+      - sh: python -m pip install -r ./requirements.txt
+        name: setup-requirements
       - sh: python -m pip install flake8 && flake8
+        name: flake8
       - sh: python -m pip install pytest hypothesis && pytest
+        name: testing
       - sh: python app.py
+        name: training
   release:
     setup:
       steps:
@@ -28,9 +33,13 @@ pipelines:
       - sh: jx step tag --version \$(cat VERSION)
     build:
       steps:
+      - sh: python -m pip install -r ./requirements.txt
+        name: setup-requirements
       - sh: python -m pip install flake8 && flake8
+        name: flake8
       # - sh: python -m pip install pytest hypothesis && pytest
       - sh: python app.py
+        name: training
       - sh: >
           export TARGET_SERVICE=`echo $APP_NAME | sed -Ee s/-training$/-service/` &&      # Target App with same prefix but -service suffix
           export GIT_PROVIDER=`jx repo -qub | grep -oP '(^https?:\/\/[a-zA-Z\d-\.]+)'` && # https://github.com or other domain
@@ -45,6 +54,7 @@ pipelines:
           git commit -m 'feat: New model trained' &&
           git push --set-upstream origin syncmodel &&
           jx create pullrequest -b -t 'New model trained'
+        name: export-model
   post:
     steps:
     - groovy: always
