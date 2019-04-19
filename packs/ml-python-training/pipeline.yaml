@@ -5,13 +5,13 @@ pipelines:
   pullRequest:
     build:
       steps:
-      - sh: python -m pip install -r ./requirements.txt
+      - sh: python3 -m pip install -r ./requirements.txt
         name: setup-requirements
-      - sh: python -m pip install flake8 && flake8
+      - sh: python3 -m pip install flake8 && flake8
         name: flake8
-      - sh: python -m pip install pytest hypothesis && pytest
+      - sh: python3 -m pip install pytest hypothesis && pytest
         name: testing
-      - sh: python app.py
+      - sh: python3 app.py
         name: training
   release:
     setup:
@@ -33,12 +33,12 @@ pipelines:
       - sh: jx step tag --version \$(cat VERSION)
     build:
       steps:
-      - sh: python -m pip install -r ./requirements.txt
+      - sh: python3 -m pip install -r ./requirements.txt
         name: setup-requirements
-      - sh: python -m pip install flake8 && flake8
+      - sh: python3 -m pip install flake8 && flake8
         name: flake8
       # - sh: python -m pip install pytest hypothesis && pytest
-      - sh: python app.py
+      - sh: python3 app.py
         name: training
       - sh: >
           export TARGET_SERVICE=`echo $APP_NAME | sed -Ee s/-training$/-service/` &&      # Target App with same prefix but -service suffix
