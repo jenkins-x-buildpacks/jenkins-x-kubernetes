@@ -1,22 +1,18 @@
 agent:
   label: jenkins-jx-base
-  container: gcr.io/jenkinsxio/builder-go:0.1.339
+  container: gcr.io/jenkinsxio/builder-go
 pipelines:
   pullRequest:
     build:
       steps:
         - sh: make build
           name: build
-          container: gcr.io/jenkinsxio/builder-go:0.1.339
   release:
     build:
       steps:
         - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_USER -f /builder/home/basic-auth-user.json
           name: basic-auth-username
-          container: gcr.io/jenkinsxio/builder-go:0.1.339
         - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_PASS -f /builder/home/basic-auth-pass.json
           name: basic-auth-password
-          container: gcr.io/jenkinsxio/builder-go:0.1.339
         - sh: make release
           name: release
-          container: gcr.io/jenkinsxio/builder-go:0.1.339
