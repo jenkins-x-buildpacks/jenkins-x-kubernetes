@@ -2,7 +2,7 @@ apiVersion: skaffold/v1beta2
 kind: Config
 build:
   artifacts:
-  - image: changeme
+  - image: REPLACE_ME_ORG/REPLACE_ME_APP_NAME
     context: .
     docker: {}
   tagPolicy:
