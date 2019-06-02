@@ -1,0 +1,68 @@
+agent:
+  label: jenkins-machine-learning
+  container: machine-learning
+pipelines:
+  pullRequest:
+    build:
+      steps:
+      - sh: source /root/.bashrc && flake8
+        name: flake8
+      - sh: source /root/.bashrc && pytest
+        name: testing
+      - sh: source /root/.bashrc && python3 -m pip install -r ./requirements.txt && python3 app.py
+        name: training
+  release:
+    setup:
+      steps:
+      - groovy: git 'https://REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME.git'
+        when: "prow"
+      - sh: git checkout master
+        comment: ensure we're not on a detached head
+        when: "!prow"
+      - sh: git config --global credential.helper store
+        when: "!prow"
+      - sh: jx step git credentials
+        when: "!prow"
+    setVersion:
+      steps:
+      - sh: echo \$(jx-release-version) > VERSION
+        comment: so we can retrieve the version in later steps
+      # TODO set the version in source?
+      - sh: jx step tag --version \$(cat VERSION)
+    build:
+      steps:
+      - sh: source /root/.bashrc && flake8
+        name: flake8
+      # - sh: python -m pip install pytest hypothesis && pytest
+      #- sh: source /root/.bashrc && conda install -c conda-forge protobuf numpy cmake && python3 -m pip install -r ./requirements.txt && python3 app.py
+      #- sh: source /root/.bashrc && conda install -c conda-forge onnx && python3 -m pip install -r ./requirements.txt && python3 app.py
+      - sh: source /root/.bashrc && python3 -m pip install -r ./requirements.txt && python3 app.py
+        name: training
+        # resources:
+        #   limits:
+        #     cpu: 2
+        #     memory: 8Gi
+        #   requests:
+        #     cpu: 0.5
+        #     memory: 2Gi
+      - sh: >
+            source /root/.bashrc &&
+            export TARGET_SERVICE=`echo $APP_NAME | sed -Ee s/-training$/-service/` &&
+            export GIT_PROVIDER=`jx repo -qub | grep -oP '(^https?:\/\/[a-zA-Z\d-\.]+)'` &&
+            export TARGET_SERVICE_REPO=`echo $GIT_PROVIDER/$REPO_OWNER/$TARGET_SERVICE` &&
+            git clone $TARGET_SERVICE_REPO &&
+            cd $TARGET_SERVICE &&
+            git checkout syncmodel || git checkout -b syncmodel &&
+            git lfs install &&
+            git lfs track '*.onnx' &&
+            cp ../*.onnx . &&
+            git add *.onnx &&
+            jx create pullrequest --push -b --title 'New model trained' --body 'feat: New model trained' &&
+            sha1sum *.onnx >&2
+        name: export-model
+  post:
+    steps:
+    - groovy: always
+      when: "!prow"
+      steps:
+      - groovy: "cleanWs()"
