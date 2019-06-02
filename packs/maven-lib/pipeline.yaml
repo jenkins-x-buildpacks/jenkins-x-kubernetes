@@ -10,7 +10,7 @@ pipelines:
       - sh: mvn verify -C -e
         name: mvn-verify
   release:
-   setup:
+    setup:
       steps:
       - groovy: git 'https://REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME.git'
         when: "prow"
