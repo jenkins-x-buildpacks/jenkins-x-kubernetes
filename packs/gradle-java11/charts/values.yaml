@@ -32,3 +32,7 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 terminationGracePeriodSeconds: 10
+podAnnotations:
+  prometheus.io/path: '/actuator/prometheus'
+  prometheus.io/port: '8080'
+  prometheus.io/scrape: 'true'
