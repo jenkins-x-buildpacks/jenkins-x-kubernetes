@@ -41,4 +41,3 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 5
   failureThreshold: 3
-terminationGracePeriodSeconds: 10
