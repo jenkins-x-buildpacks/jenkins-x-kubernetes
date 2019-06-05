@@ -35,7 +35,6 @@ spec:
               periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
               successThreshold: {{ .Values.readinessProbe.successThreshold }}
               timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
             resources:
-{{ toYaml .Values.resources | indent 12 }}
+{{ toYaml .Values.resources | indent 14 }}
 {{- end }}
