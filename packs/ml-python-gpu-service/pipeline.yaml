@@ -1,0 +1,64 @@
+agent:
+  label: jenkins-machine-learning-gpu
+  container: machine-learning-gpu
+pipelines:
+  pullRequest:
+    build:
+      steps:
+      - sh: source /root/.bashrc && git lfs install && git lfs pull
+      - sh: source /root/.bashrc && flake8
+        name: flake8
+      - sh: source /root/.bashrc && pytest
+        name: testing
+      - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
+    postBuild:
+      steps:
+      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
+    promote:
+      steps:
+      - dir: ./charts/preview
+        steps:
+        - sh: make preview
+        - sh: jx preview --app $APP_NAME --dir ../..
+  release:
+    setup:
+      steps:
+      - groovy: git 'https://REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME.git'
+        when: "prow"
+      - sh: git lfs install && git lfs pull
+      - sh: git checkout master
+        comment: ensure we're not on a detached head
+        when: "!prow"
+      - sh: git config --global credential.helper store
+        when: "!prow"
+      - sh: jx step git credentials
+        when: "!prow"
+    setVersion:
+      steps:
+      - sh: echo \$(jx-release-version) > VERSION
+        comment: so we can retrieve the version in later steps
+      # TODO set the version in source?
+      - sh: jx step tag --version \$(cat VERSION)
+    build:
+      steps:
+      - sh: source /root/.bashrc && flake8
+        name: flake8
+      - sh: source /root/.bashrc && pytest
+        name: testing
+      - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
+      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
+    promote:
+      steps:
+      - dir: ./charts/REPLACE_ME_APP_NAME
+        steps:
+        - sh: jx step changelog --version v\$(cat ../../VERSION)
+        - comment: release the helm chart
+          sh: jx step helm release
+        - comment: promote through all 'Auto' promotion Environments
+          sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+  post:
+    steps:
+    - groovy: always
+      when: "!prow"
+      steps:
+      - groovy: "cleanWs()"
