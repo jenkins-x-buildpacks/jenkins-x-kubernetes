@@ -27,8 +27,8 @@ pipelines:
         - sh: git checkout master
         - sh: git config --global credential.helper store
         - sh: jx step git credentials
-        - sh: echo \$(jx-release-version) > VERSION
-        - sh: jx step tag --version \$(cat VERSION)
+        - sh: echo $(jx-release-version) > VERSION
+        - sh: jx step tag --version $(cat VERSION)
       - name: build
         steps:
         - sh: source /root/.bashrc && flake8
