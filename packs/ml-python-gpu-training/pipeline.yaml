@@ -4,7 +4,9 @@ agent:
 pipelines:
   pullRequest:
     pipeline:
-      agent: machine-learning-gpu
+      agent:
+        image:
+          machine-learning-gpu
       stages:
       - nanme: build
         steps:
@@ -16,7 +18,9 @@ pipelines:
           name: training
   release:
     pipeline:
-      agent: machine-learning-gpu
+      agent:
+        image:
+          machine-learning-gpu
       stages:
       - name: prepare
         steps:
