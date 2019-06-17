@@ -61,7 +61,7 @@ pipelines:
               git lfs install &&
               git lfs track '*.onnx' &&
               cp ../*.onnx . &&
-              cp ../metrics . &&
+              cp -r ../metrics . &&
               git add *.onnx metrics &&
               jx create pullrequest --push -b --title 'New model trained' --body 'feat: New model trained' &&
               sha1sum *.onnx >&2
