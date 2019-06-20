@@ -15,4 +15,5 @@ else
 	exit -1
 endif
 	echo "  version: $(PREVIEW_VERSION)" >> requirements.yaml
+	jx step helm delete --purge preview -n jx-$(ORG)-$(PREVIEW_NAMESPACE)
 	jx step helm build
