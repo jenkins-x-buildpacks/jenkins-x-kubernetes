@@ -1,0 +1,12 @@
+version: "2.1"
+
+services:
+  db:
+    image: docker.io/postgres:11.2
+    environment:
+      - POSTGRES_DB=test_db
+      - POSTGRES_USER=test_user
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
