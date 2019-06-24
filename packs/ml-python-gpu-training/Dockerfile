@@ -1,0 +1,1 @@
+# Not used as the pipeline does not create an image
