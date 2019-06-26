@@ -8,7 +8,7 @@ pipelines:
         image:
           machine-learning-gpu
       stages:
-      - nanme: build
+      - name: build
         steps:
         - sh: source /root/.bashrc && flake8
           name: flake8
