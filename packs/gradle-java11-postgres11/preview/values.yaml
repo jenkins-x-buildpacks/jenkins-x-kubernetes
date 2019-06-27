@@ -22,3 +22,8 @@ preview:
     pullPolicy: IfNotPresent
   env:
     SPRING_PROFILES_ACTIVE: "preview"
+
+preview-db:
+  postgresqlDatabase: test_db
+  postgresqlUsername: test_user
+  postgresqlPassword: test_password
