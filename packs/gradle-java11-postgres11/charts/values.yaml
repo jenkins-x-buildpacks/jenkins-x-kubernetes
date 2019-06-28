@@ -10,6 +10,9 @@ image:
 # define environment variables here as a map of key: value
 env:
 
+# define secret environment variables here as a map of key: value
+secretEnvs:
+
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
 
