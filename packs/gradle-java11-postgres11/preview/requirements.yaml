@@ -10,7 +10,7 @@ dependencies:
   version: 2.3.92
 - alias: preview-db
   name: postgresql
-  version: 5.3.8
+  version: 5.3.9
   repository: https://kubernetes-charts.storage.googleapis.com
 
   # !! "alias: preview" must be last entry in dependencies array !!
