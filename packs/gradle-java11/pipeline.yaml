@@ -11,8 +11,10 @@ pipelines:
   pullRequest:
     build:
       steps:
-        - sh: gradle clean build aT
-          name: build-accceptancetest
+        - sh: gradle clean build
+          name: build
+        - sh: gradle aT
+          name: accceptancetest
         - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
           name: container-build
     postBuild:
@@ -38,7 +40,8 @@ pipelines:
         - sh: jx step tag --version \$(cat VERSION)
     build:
       steps:
-        - sh: gradle clean assemble
+        - sh: gradle clean build
+        - sh: gradle aT
         - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
           name: container-build
         - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
