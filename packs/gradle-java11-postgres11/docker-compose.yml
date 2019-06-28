@@ -2,7 +2,7 @@ version: "2.1"
 
 services:
   db:
-    image: docker.io/postgres:11.2
+    image: docker.io/postgres:11.4
     environment:
       - POSTGRES_DB=test_db
       - POSTGRES_USER=test_user
