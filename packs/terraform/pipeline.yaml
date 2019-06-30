@@ -1,6 +1,6 @@
 extends:
   import: classic
-  file: go/pipeline.yaml
+  file: docker/pipeline.yaml
 agent:
   label: builder-terraform
   container: terraform
