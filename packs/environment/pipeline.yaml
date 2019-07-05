@@ -3,7 +3,7 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: gcr.io/jenkinsxio/builder-go
+  container: go
 pipelines:
   release:
     build:

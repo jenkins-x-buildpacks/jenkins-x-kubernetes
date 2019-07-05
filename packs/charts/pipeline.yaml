@@ -1,6 +1,6 @@
 agent:
   label: jenkins-jx-base
-  container: gcr.io/jenkinsxio/builder-go
+  container: go
 pipelines:
   pullRequest:
     build:
