@@ -57,7 +57,7 @@ pipelines:
             git lfs track '*.onnx' &&
             cp ../*.onnx . &&
             git add *.onnx &&
-            jx create pullrequest --push -b --title 'New model trained' --body 'feat: New model trained' &&
+            { jx create pullrequest --push -b --title 'New model trained' --body 'feat: New model trained' || echo 'Using previous PR'; } &&
             sha1sum *.onnx >&2
         name: export-model
   post:
