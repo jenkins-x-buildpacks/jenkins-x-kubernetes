@@ -1,4 +1,4 @@
-FROM ruby:latest
+FROM ruby:2.6.3
 
 ENV PORT 3000
 EXPOSE 3000
