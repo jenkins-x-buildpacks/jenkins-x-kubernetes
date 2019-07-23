@@ -1,0 +1,28 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: REPLACE_ME_DOCKER_REGISTRY_ORG/REPLACE_ME_APP_NAME
+    context: .
+    docker: {}
+  tagPolicy:
+    envTemplate:
+      template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.VERSION}}'
+  local: {}
+deploy:
+  kubectl: {}
+profiles:
+- name: dev
+  build:
+    tagPolicy:
+      envTemplate:
+        template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.DIGEST_HEX}}'
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: REPLACE_ME_APP_NAME
+        chartPath: charts/REPLACE_ME_APP_NAME
+        setValueTemplates:
+          image.repository: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}'
+          image.tag: '{{.DIGEST_HEX}}'
