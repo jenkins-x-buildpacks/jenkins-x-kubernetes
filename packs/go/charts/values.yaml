@@ -13,6 +13,11 @@ env:
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
 
+# enable this flag to use Istio
+istio:
+  enabled: false
+  hosts: {}
+
 service:
   name: REPLACE_ME_APP_NAME
   type: ClusterIP
