@@ -1,0 +1,74 @@
+{{- if .Values.istio.enabled }}
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+{{- if .Values.service.name }}
+  name: {{ .Values.service.name }}
+{{- else }}
+  name: {{ template "fullname" . }}
+{{- end }}
+spec:
+  hosts:
+{{ toYaml .Values.istio.hosts | indent 2 }}
+  gateways:
+{{- if .Values.service.name }}
+  - {{ .Values.service.name }}
+{{- else }}
+  - {{ template "fullname" . }}
+{{- end }}
+  http:
+  - match:
+    route:
+    - destination:
+{{- if .Values.service.name }}
+        host: {{ .Values.service.name }}
+{{- else }}
+        host: {{ template "fullname" . }}
+{{- end }}
+        port:
+          number: {{ .Values.service.externalPort }}
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+{{- if .Values.service.name }}
+  name: {{ .Values.service.name }}
+{{- else }}
+  name: {{ template "fullname" . }}
+{{- end }}
+spec:
+{{- if .Values.service.name }}
+  host: {{ .Values.service.name }}
+{{- else }}
+  host: {{ template "fullname" . }}
+{{- end }}
+  subsets:
+  - name: v1
+    labels:
+      app: {{ template "fullname" . }}
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+{{- if .Values.service.name }}
+  name: {{ .Values.service.name }}
+{{- else }}
+  name: {{ template "fullname" . }}
+{{- end }}
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: {{ .Values.service.externalPort }}
+      name: http
+      protocol: HTTP
+    hosts:
+{{ toYaml .Values.istio.hosts | indent 4 }}
+
+{{- end }}
