@@ -16,7 +16,7 @@ pipelines:
         name: post-build
     promote:
       steps:
-      - dir: ./charts/preview
+      - dir: charts/preview
         steps:
         - sh: make preview
           name: make-preview
