@@ -25,4 +25,4 @@ profiles:
         chartPath: charts/REPLACE_ME_APP_NAME
         setValueTemplates:
           image.repository: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}'
-          image.tag: '{{.TAG}}'
+          image.tag: '{{.VERSION}}'
