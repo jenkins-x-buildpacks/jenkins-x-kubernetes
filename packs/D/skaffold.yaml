@@ -16,7 +16,7 @@ profiles:
   build:
     tagPolicy:
       envTemplate:
-        template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}:{{.DIGEST_HEX}}'
+        template: '{{.DOCKER_REGISTRY}}/{{.IMAGE_NAME}}'
     local: {}
   deploy:
     helm:
