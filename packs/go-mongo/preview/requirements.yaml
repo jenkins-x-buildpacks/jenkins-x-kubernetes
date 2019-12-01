@@ -1,0 +1,23 @@
+# !! File must end with empty line !!
+dependencies:
+- alias: expose
+  name: exposecontroller
+  repository: http://chartmuseum.jenkins-x.io
+  version: 2.3.92
+- alias: cleanup
+  name: exposecontroller
+  repository: http://chartmuseum.jenkins-x.io
+  version: 2.3.92
+
+- name: mongodb
+  alias: preview-db
+  version: 5.3.0
+  repository:  https://kubernetes-charts.storage.googleapis.com
+
+  # !! "alias: preview" must be last entry in dependencies array !!
+  # !! Place custom dependencies above !!
+- alias: preview
+  name: REPLACE_ME_APP_NAME
+  repository: file://../REPLACE_ME_APP_NAME
+
+
