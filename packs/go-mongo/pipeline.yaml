@@ -1,0 +1,41 @@
+extends:
+  import: classic
+  file: go/pipeline.yaml
+pipelines:
+  pullRequest:
+    build:
+      steps:
+      - sh: export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml
+        name: container-build
+    postBuild:
+      steps:
+      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:$PREVIEW_VERSION
+        name: post-build
+    promote:
+      steps:
+      - dir: /home/jenkins/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/preview
+        steps:
+        - sh: make preview
+          name: make-preview
+        - sh: jx preview --app $APP_NAME --dir ../..
+          name: jx-preview
+
+  release:
+    build:
+      steps:
+      - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
+        name: container-build
+      - sh: jx step post build --image $DOCKER_REGISTRY/$ORG/$APP_NAME:\$(cat VERSION)
+        name: post-build
+    promote:
+      steps:
+      - dir: /home/jenkins/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/REPLACE_ME_APP_NAME
+        steps:
+        - sh: jx step changelog --version v\$(cat ../../VERSION)
+          name: changelog
+        - comment: release the helm chart
+          name: helm-release
+          sh: jx step helm release
+        - comment: promote through all 'Auto' promotion Environments
+          sh: jx promote -b --all-auto --timeout 1h --version \$(cat ../../VERSION)
+          name: jx-promote
