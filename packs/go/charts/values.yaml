@@ -27,17 +27,17 @@ canary:
   enabled: false
   progressDeadlineSeconds: 60
   canaryAnalysis:
-    interval: 1m
+    interval: "1m"
     threshold: 5
     maxWeight: 60
     stepWeight: 20
     metrics:
       requestSuccessRate:
         threshold: 99
-        interval: 1m
+        interval: "1m"
       requestDuration:
         threshold: 1000
-        interval: 1m
+        interval: "1m"
   # The host is using Istio Gateway and is currently not auto-generated
   # Please overwrite the `canary.host` in `values.yaml` in each environment repository (e.g., staging, production)
   host: acme.com
