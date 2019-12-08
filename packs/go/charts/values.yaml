@@ -13,6 +13,15 @@ env:
 # enable this flag to use knative serve to deploy the app
 knativeDeploy: false
 
+# HorizontalPodAutoscaler
+hpa:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  cpuTargetAverageUtilization: 80
+  memoryTargetAverageUtilization: 80
+
+# Canary deployments
 # If enabled, Istio and Flagger need to be installed
 canary:
   enabled: false
@@ -30,7 +39,7 @@ canary:
         threshold: 1000
         interval: 1m
   # The host is using Istio Gateway and is currently not auto-generated
-  # Please overrwrite the `canary.host` in `values.yaml` in each environment repository (e.g., staging, production)
+  # Please overwrite the `canary.host` in `values.yaml` in each environment repository (e.g., staging, production)
   host: acme.com
 
 service:
