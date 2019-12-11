@@ -13,7 +13,7 @@ pipelines:
         name: post-build
     promote:
       steps:
-      - dir: /home/jenkins/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/preview
+      - dir: /home/jenkins/agent/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/preview
         steps:
         - sh: make preview
           name: make-preview
@@ -29,7 +29,7 @@ pipelines:
         name: post-build
     promote:
       steps:
-      - dir: /home/jenkins/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/REPLACE_ME_APP_NAME
+      - dir: /home/jenkins/agent/go/src/REPLACE_ME_GIT_PROVIDER/REPLACE_ME_ORG/REPLACE_ME_APP_NAME/charts/REPLACE_ME_APP_NAME
         steps:
         - sh: jx step changelog --version v\$(cat ../../VERSION)
           name: changelog
