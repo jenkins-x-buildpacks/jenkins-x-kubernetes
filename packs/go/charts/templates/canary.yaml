@@ -22,7 +22,6 @@ spec:
   service:
     port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.externalPort }}
-    # targetPort: {{ .Values.service.internalPort }}
     gateways:
     - {{ template "fullname" . }}
     hosts:
@@ -53,7 +52,7 @@ spec:
   - port:
       number: {{ .Values.service.externalPort }}
       name: http
-      protocol: TCP
+      protocol: HTTP
     hosts:
     - {{ .Values.canary.host }}
 {{- end }}
