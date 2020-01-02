@@ -22,7 +22,7 @@ hpa:
   memoryTargetAverageUtilization: 80
 
 # Canary deployments
-# If enabled, Istio and Flagger need to be installed
+# If enabled, Istio and Flagger need to be installed in the cluster
 canary:
   enabled: false
   progressDeadlineSeconds: 60
@@ -31,6 +31,7 @@ canary:
     threshold: 5
     maxWeight: 60
     stepWeight: 20
+    # WARNING: Canary deployments will fail and rollback if there is no traffic that will generate the below specified metrics.
     metrics:
       requestSuccessRate:
         threshold: 99
