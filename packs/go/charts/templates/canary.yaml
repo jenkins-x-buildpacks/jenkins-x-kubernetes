@@ -22,6 +22,7 @@ spec:
   service:
     port: {{ .Values.service.externalPort }}
     targetPort: {{ .Values.service.externalPort }}
+    # targetPort: {{ .Values.service.internalPort }}
     gateways:
     - {{ template "fullname" . }}
     hosts:
