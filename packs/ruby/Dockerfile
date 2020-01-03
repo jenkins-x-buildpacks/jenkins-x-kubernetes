@@ -1,4 +1,4 @@
-FROM ruby:onbuild
+FROM ruby:2.6.3
 
 ENV PORT 3000
 EXPOSE 3000
@@ -8,7 +8,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 RUN apt-get update && \
-    apt-get install -y nodejs mysql-client postgresql-client sqlite3 vim --no-install-recommends && \
+    apt-get install -y nodejs mariadb-client postgresql-client sqlite3 vim --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 ENV RAILS_ENV development
