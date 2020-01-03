@@ -28,6 +28,8 @@ spec:
         - name: {{ $pkey }}
           value: {{ quote $pval }}
 {{- end }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 10 }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         livenessProbe:
