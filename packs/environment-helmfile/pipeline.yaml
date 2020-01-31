@@ -4,13 +4,6 @@ extends:
 agent:
   label: jenkins-go
   container: gcr.io/jenkinsxio/builder-go
-containerOptions:
-  name: ""
-  resources: {}
-  volumeMounts:
-  - mountPath: /builder/home/.jx/localSecrets/currentCluster
-    name: local-secrets
-    readOnly: true
 pipelines:
   release:
     build:
