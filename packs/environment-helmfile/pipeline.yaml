@@ -97,10 +97,30 @@ pipelines:
     build:
       steps:
         - args:
-          - build
-          command: make
-          dir: /workspace/source/env
-          name: lint-env-helm
+          - step
+          - verify
+          - preinstall
+          - --disable-verify-packages
+          - --provider-values-dir="kubeProviders"
+          command: jx
+          dir: /workspace/source
+          name: verify-preinstall
+        - args:
+          - step
+          - create
+          - helmfile
+          - --values
+          - $JX_SECRETS_YAML
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
+          command: jx
+          dir: /workspace/source
+          name: create-helmfile
+        - args:
+          - lint
+          command: helmfile
+          dir: /workspace/source
+          name: lint-helmfile
 
 
 
