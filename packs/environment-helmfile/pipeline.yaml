@@ -34,7 +34,7 @@ pipelines:
           - create
           - helmfile
           - --values
-          - $JX_SECRETS_DIR/secrets.yaml
+          - $JX_SECRETS_YAML
           - --values
           - ../jx-requirements.values.yaml.gotmpl
           command: jx
