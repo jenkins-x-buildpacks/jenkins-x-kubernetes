@@ -1,0 +1,113 @@
+extends:
+  import: classic
+  file: pipeline.yaml
+agent:
+  label: jenkins-go
+  container: gcr.io/jenkinsxio/builder-go
+containerOptions:
+  name: ""
+  resources: {}
+  volumeMounts:
+  - mountPath: /builder/home/.jx/localSecrets/currentCluster
+    name: local-secrets
+    readOnly: true
+pipelines:
+  release:
+    build:
+      steps:
+        - args:
+          - step
+          - git
+          - validate
+          command: jx
+          dir: /workspace/source
+          name: validate-git
+        - args:
+          - step
+          - verify
+          - preinstall
+          - --disable-verify-packages
+          - --provider-values-dir="kubeProviders"
+          command: jx
+          dir: /workspace/source
+          name: verify-preinstall
+        - args:
+          - upgrade
+          - crd
+          command: jx
+          name: install-jx-crds
+        - args:
+          - step
+          - create
+          - helmfile
+          - --values
+          - $JX_SECRETS_DIR/secrets.yaml
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
+          command: jx
+          dir: /workspace/source
+          name: generate-helmfile
+        - args:
+          - sync
+          command: helmfile
+          dir: /workspace/source/system
+          name: helmfile-system
+        - args:
+          - step
+          - verify
+          - ingress
+          - --ingress-namespace=nginx
+          - --ingress-service=nginx-ingress-controller
+          command: jx
+          dir: /workspace/source
+          name: verify-ingress
+        - args:
+          - sync
+          command: helmfile
+          dir: /workspace/source/apps
+          name: helmfile-apps
+        - args:
+          - step
+          - verify
+          - env
+          command: jx
+          dir: /workspace/source
+          name: verify-jenkins-x-environment
+        - args:
+          - step
+          - scheduler
+          - config
+          - apply
+          - --direct=true
+          command: jx
+          dir: /workspace/source
+          name: install-pipelines
+        - args:
+          - update
+          - webhooks
+          - --verbose
+          - --warn-on-fail
+          command: jx
+          dir: /workspace/source
+          name: update-webhooks
+        - args:
+          - step
+          - verify
+          - install
+          - --pod-wait-time
+          - 30m
+          command: jx
+          dir: /workspace/source
+          name: verify-installation
+
+  pullRequest:
+    build:
+      steps:
+        - args:
+          - build
+          command: make
+          dir: /workspace/source/env
+          name: lint-env-helm
+
+
+
