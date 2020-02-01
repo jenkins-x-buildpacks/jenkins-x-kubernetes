@@ -7,7 +7,7 @@ agent:
   container: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-46
 env:
   - name: JX_SECRETS_YAML
-    value: /builder/home/.jx/localSecrets/currentCluster
+    value: /tmp/secrets/jx/localSecrets/currentCluster
 pipelines:
   release:
     build:
