@@ -3,8 +3,7 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  # temporary hack until we get this PR merged: https://github.com/jenkins-x/jx/pull/6664
-  container: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-46
+  container: jenkinsxio/jenkins-x-installer:0.0.3
 pipelines:
   release:
     build:
@@ -51,7 +50,6 @@ pipelines:
         - args:
           - sync
           command: helmfile
-          #image: jenkinsxio/jenkins-x-installer:0.0.2
           dir: /workspace/source/system
           name: helmfile-system
         - args:
@@ -66,7 +64,6 @@ pipelines:
         - args:
           - sync
           command: helmfile
-          #image: jenkinsxio/jenkins-x-installer:0.0.2
           dir: /workspace/source/apps
           name: helmfile-apps
         - args:
@@ -129,7 +126,6 @@ pipelines:
         - args:
           - lint
           command: helmfile
-          image: jenkinsxio/jenkins-x-installer:0.0.2
           dir: /workspace/source
           name: lint-helmfile
 
