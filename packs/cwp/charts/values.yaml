@@ -71,3 +71,24 @@ readinessProbe:
   successThreshold: 1
   timeoutSeconds: 5
   failureThreshold: 3
+
+
+# custom ingress annotations on this service
+ingress:
+  annotations:
+#      kubernetes.io/ingress.class: nginx
+
+# values we use from the `jx-requirements.yml` file if we are using helmfile and helm 3
+jxRequirements:
+  ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: -jx.
+    tls:
+      email: ""
+      enabled: false
+      production: false
+
+    # shared ingress annotations on all services
+    annotations:
+    #  kubernetes.io/ingress.class: nginx
