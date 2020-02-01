@@ -44,7 +44,7 @@ pipelines:
         - args:
           - sync
           command: helmfile
-          image: jenkinsxio/jenkins-x-installer:0.0.2
+          #image: jenkinsxio/jenkins-x-installer:0.0.2
           dir: /workspace/source/system
           name: helmfile-system
         - args:
@@ -59,7 +59,7 @@ pipelines:
         - args:
           - sync
           command: helmfile
-          image: jenkinsxio/jenkins-x-installer:0.0.2
+          #image: jenkinsxio/jenkins-x-installer:0.0.2
           dir: /workspace/source/apps
           name: helmfile-apps
         - args:
