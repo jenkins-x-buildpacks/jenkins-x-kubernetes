@@ -3,7 +3,8 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: gcr.io/jenkinsxio/builder-go
+  # temporary hack until we get this PR merged: https://github.com/jenkins-x/jx/pull/6664
+  container: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-27
 pipelines:
   release:
     build:
