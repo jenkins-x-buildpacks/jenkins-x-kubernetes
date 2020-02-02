@@ -3,7 +3,7 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: jenkinsxio/jenkins-x-installer:0.0.3
+  container: jenkinsxio/jenkins-x-installer:0.0.6
 pipelines:
   release:
     build:
