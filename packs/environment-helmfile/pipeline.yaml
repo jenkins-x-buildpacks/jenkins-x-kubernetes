@@ -7,6 +7,8 @@ agent:
 pipelines:
   release:
     pipeline:
+      agent:
+        image: jenkinsxio/jenkins-x-installer:0.0.6
       stages:
       - name: release
         options:
@@ -118,6 +120,8 @@ pipelines:
 
   pullRequest:
     pipeline:
+      agent:
+        image: jenkinsxio/jenkins-x-installer:0.0.6
       stages:
       - name: pr-checks
         options:
