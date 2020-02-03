@@ -15,9 +15,9 @@ pipelines:
           containerOptions:
             env:
             - name: JX_SECRETS_YAML
-              value: /builder/home/.jx/localSecrets/currentCluster/secrets.yaml
+              value: /tmp/.jx/localSecrets/currentCluster/secrets.yaml
             volumeMounts:
-            - mountPath: /builder/home/.jx/localSecrets/currentCluster
+            - mountPath: /tmp/.jx/localSecrets/currentCluster
               name: local-secrets
               readOnly: true
           volumes:
@@ -128,9 +128,9 @@ pipelines:
           containerOptions:
             env:
             - name: JX_SECRETS_YAML
-              value: /builder/home/.jx/localSecrets/currentCluster/secrets.yaml
+              value: /tmp/.jx/localSecrets/currentCluster/secrets.yaml
             volumeMounts:
-            - mountPath: /builder/home/.jx/localSecrets/currentCluster
+            - mountPath: /tmp/.jx/localSecrets/currentCluster
               name: local-secrets
               readOnly: true
           volumes:
