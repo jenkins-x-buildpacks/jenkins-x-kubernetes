@@ -6,8 +6,24 @@ agent:
   container: jenkinsxio/jenkins-x-installer:0.0.6
 pipelines:
   release:
-    build:
-      steps:
+    pipeline:
+      stages:
+      - name: release
+        options:
+          containerOptions:
+            env:
+            - name: JX_SECRETS_YAML
+              value: /builder/home/.jx/localSecrets/currentCluster/secrets.yaml
+            volumeMounts:
+            - mountPath: /builder/home/.jx/localSecrets/currentCluster
+              name: local-secrets
+              readOnly: true
+          volumes:
+          - name: local-secrets
+            secret:
+              optional: true
+              secretName: jx-local-secrets
+        steps:
         - args:
           - step
           - git
@@ -101,8 +117,24 @@ pipelines:
           name: verify-installation
 
   pullRequest:
-    build:
-      steps:
+    pipeline:
+      stages:
+      - name: pr-checks
+        options:
+          containerOptions:
+            env:
+            - name: JX_SECRETS_YAML
+              value: /builder/home/.jx/localSecrets/currentCluster/secrets.yaml
+            volumeMounts:
+            - mountPath: /builder/home/.jx/localSecrets/currentCluster
+              name: local-secrets
+              readOnly: true
+          volumes:
+          - name: local-secrets
+            secret:
+              optional: true
+              secretName: jx-local-secrets
+        steps:
         - args:
           - step
           - verify
