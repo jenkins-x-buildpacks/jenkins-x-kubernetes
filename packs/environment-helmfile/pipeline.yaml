@@ -153,8 +153,13 @@ pipelines:
         - args:
           - lint
           command: helmfile
-          dir: /workspace/source
-          name: lint-helmfile
+          dir: /workspace/source/system
+          name: lint-helmfile-system
+        - args:
+          - lint
+          command: helmfile
+          dir: /workspace/source/apps
+          name: lint-helmfile-apps
 
 
 
