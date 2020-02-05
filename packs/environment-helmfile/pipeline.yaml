@@ -3,12 +3,12 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-118
+  container: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-125
 pipelines:
   release:
     pipeline:
       agent:
-        image: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-118
+        image: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-125
       stages:
       - name: release
         options:
@@ -123,7 +123,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-118
+        image: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-125
       stages:
       - name: pr-checks
         options:
