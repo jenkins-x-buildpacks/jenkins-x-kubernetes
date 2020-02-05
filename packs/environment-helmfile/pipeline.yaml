@@ -15,7 +15,7 @@ pipelines:
           containerOptions:
             env:
             - name: PATH
-              value: "/usr/bin/helm3-bin:$PATH"
+              value: "/usr/bin/helm3-bin:/usr/local/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/google-cloud-sdk/bin:/opt/google/chrome:/usr/local/go/bin:/usr/local/glide:/usr/local/dep:/usr/local/:/home/jenkins/go/bin"
             - name: JX_SECRETS_YAML
               value: /tmp/.jx/localSecrets/currentCluster/secrets.yaml
             volumeMounts:
@@ -130,7 +130,7 @@ pipelines:
           containerOptions:
             env:
             - name: PATH
-              value: "/usr/bin/helm3-bin:$PATH"
+              value: "/usr/bin/helm3-bin:/usr/local/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/google-cloud-sdk/bin:/opt/google/chrome:/usr/local/go/bin:/usr/local/glide:/usr/local/dep:/usr/local/:/home/jenkins/go/bin"
             - name: JX_SECRETS_YAML
               value: /tmp/.jx/localSecrets/currentCluster/secrets.yaml
             volumeMounts:
