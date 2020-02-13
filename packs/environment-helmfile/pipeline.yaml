@@ -14,6 +14,8 @@ pipelines:
         options:
           containerOptions:
             env:
+            - name: XDG_CONFIG_HOME
+              value: /workspace/source
             - name: PATH
               value: "/usr/bin/helm3-bin:/usr/local/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/google-cloud-sdk/bin:/opt/google/chrome:/usr/local/go/bin:/usr/local/glide:/usr/local/dep:/usr/local/:/home/jenkins/go/bin:/usr/local/gcloud/google-cloud-sdk/bin"
         steps:
@@ -77,6 +79,8 @@ pipelines:
           - step
           - git
           - credentials
+          - -o
+          - /workspace/source/git/credentials
           command: jx
           dir: /workspace/source
           name: git-creds
