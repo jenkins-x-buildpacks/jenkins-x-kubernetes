@@ -75,6 +75,13 @@ pipelines:
           name: helmfile-apps
         - args:
           - step
+          - git
+          - credentials
+          command: jx
+          dir: /workspace/source
+          name: git-creds
+        - args:
+          - step
           - verify
           - env
           command: jx
