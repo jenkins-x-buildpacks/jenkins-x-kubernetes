@@ -85,6 +85,11 @@ pipelines:
           dir: /workspace/source
           name: git-creds
         - args:
+          - infinity
+          command: sleep
+          dir: /workspace/source
+          name: sleep
+        - args:
           - step
           - verify
           - env
