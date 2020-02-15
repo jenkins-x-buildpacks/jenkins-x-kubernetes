@@ -121,25 +121,9 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: gcr.io/jenkinsxio/builder-go:0.0.0-SNAPSHOT-PR-6664-125
+        image: jenkinsxio/jenkins-x-installer:0.0.24
       stages:
       - name: pr-checks
-        options:
-          containerOptions:
-            env:
-            - name: PATH
-              value: "/usr/bin/helm3-bin:/usr/local/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/google-cloud-sdk/bin:/opt/google/chrome:/usr/local/go/bin:/usr/local/glide:/usr/local/dep:/usr/local/:/home/jenkins/go/bin"
-            - name: JX_SECRETS_YAML
-              value: /tmp/.jx/localSecrets/currentCluster/secrets.yaml
-            volumeMounts:
-            - mountPath: /tmp/.jx/localSecrets/currentCluster
-              name: local-secrets
-              readOnly: true
-          volumes:
-          - name: local-secrets
-            secret:
-              optional: true
-              secretName: jx-local-secrets
         steps:
         - args:
           - step
