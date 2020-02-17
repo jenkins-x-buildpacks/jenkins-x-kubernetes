@@ -3,12 +3,12 @@ extends:
   file: pipeline.yaml
 agent:
   label: jenkins-go
-  container: jenkinsxio/jenkins-x-installer:0.0.24
+  container: jenkinsxio/jenkins-x-installer:0.0.27
 pipelines:
   release:
     pipeline:
       agent:
-        image: jenkinsxio/jenkins-x-installer:0.0.24
+        image: jenkinsxio/jenkins-x-installer:0.0.27
       stages:
       - name: release
         options:
@@ -119,7 +119,7 @@ pipelines:
   pullRequest:
     pipeline:
       agent:
-        image: jenkinsxio/jenkins-x-installer:0.0.24
+        image: jenkinsxio/jenkins-x-installer:0.0.27
       stages:
       - name: pr-checks
         options:
