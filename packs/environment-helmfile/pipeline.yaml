@@ -14,10 +14,8 @@ pipelines:
         options:
           containerOptions:
             env:
-            - name: XDG_CONFIG_HOME
-              value: "/builder/home"
-            - name: PATH
-              value: "/usr/bin/helm3-bin:/usr/local/git/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/google-cloud-sdk/bin:/opt/google/chrome:/usr/local/go/bin:/usr/local/glide:/usr/local/dep:/usr/local/:/home/jenkins/go/bin:/usr/local/gcloud/google-cloud-sdk/bin"
+            - name: HELM_PLUGINS
+              value: "/root/.cache/helm/plugins"
         steps:
         - args:
           - step
@@ -124,6 +122,11 @@ pipelines:
         image: jenkinsxio/jenkins-x-installer:0.0.24
       stages:
       - name: pr-checks
+        options:
+          containerOptions:
+            env:
+            - name: HELM_PLUGINS
+              value: "/root/.cache/helm/plugins"
         steps:
         - args:
           - step
