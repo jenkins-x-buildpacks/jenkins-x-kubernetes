@@ -26,13 +26,6 @@ pipelines:
           name: validate-git
         - args:
           - step
-          - override-requirements
-          - -b
-          command: jx
-          dir: /workspace/source
-          name: override-requirements
-        - args:
-          - step
           - verify
           - preinstall
           - --disable-verify-packages
