@@ -1,0 +1,19 @@
+extends:
+  import: classic
+  file: pipeline.yaml
+agent:
+  label: jenkins-go
+  container: gcr.io/jenkinsxio/builder-go
+pipelines:
+  release:
+    build:
+      steps:
+        - name: run
+          image: jenkins4eval/jenkinsfile-runner
+          sh: /app/bin/jenkinsfile-runner-launcher -w /app/jenkins -p /usr/share/jenkins/ref/plugins -f /workspace/source --runWorkspace /workspace/build
+  pullRequest:
+    build:
+      steps:
+        - name: run
+          image: jenkins4eval/jenkinsfile-runner
+          sh: /app/bin/jenkinsfile-runner-launcher -w /app/jenkins -p /usr/share/jenkins/ref/plugins -f /workspace/source --runWorkspace /workspace/build

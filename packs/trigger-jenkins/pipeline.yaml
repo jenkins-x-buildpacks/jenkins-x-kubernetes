@@ -1,0 +1,16 @@
+agent:
+  label: jenkins-go
+  container: go
+pipelines:
+  pullRequest:
+    build:
+      steps:
+      - sh: tp
+        name: build
+        image: gcr.io/jstrachan-multicluster/trigger-pipeline:v3
+  release:
+    build:
+      steps:
+      - sh: tp
+        name: build
+        image: gcr.io/jstrachan-multicluster/trigger-pipeline:v3
