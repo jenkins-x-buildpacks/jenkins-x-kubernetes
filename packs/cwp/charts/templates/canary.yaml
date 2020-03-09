@@ -1,5 +1,5 @@
 {{- if .Values.canary.enabled }}
-apiVersion: flagger.app/v1alpha3
+apiVersion: flagger.app/v1beta1
 kind: Canary
 metadata:
   name: {{ template "fullname" . }}
@@ -26,7 +26,7 @@ spec:
     - {{ template "fullname" . }}
     hosts:
     - {{ .Values.canary.host }}
-  canaryAnalysis:
+  analysis:
     interval: {{ .Values.canary.canaryAnalysis.interval }}
     threshold: {{ .Values.canary.canaryAnalysis.threshold }}
     maxWeight: {{ .Values.canary.canaryAnalysis.maxWeight }}
