@@ -22,7 +22,7 @@ hpa:
   memoryTargetAverageUtilization: 80
 
 # Canary deployments
-# If enabled, Istio and Flagger need to be installed in the cluster
+# If enabled, Istio v1.5+ and Flagger need to be installed in the cluster
 canary:
   enabled: false
   progressDeadlineSeconds: 60

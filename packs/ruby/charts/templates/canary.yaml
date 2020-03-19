@@ -35,9 +35,36 @@ spec:
     - name: request-success-rate
       threshold: {{ .Values.canary.canaryAnalysis.metrics.requestSuccessRate.threshold }}
       interval: {{ .Values.canary.canaryAnalysis.metrics.requestSuccessRate.interval }}
-    - name: request-duration
-      threshold: {{ .Values.canary.canaryAnalysis.metrics.requestDuration.threshold }}
+    - name: latency
+      templateRef:
+        name: latency
+      thresholdRange:
+        max: {{ .Values.canary.canaryAnalysis.metrics.requestDuration.threshold }}
       interval: {{ .Values.canary.canaryAnalysis.metrics.requestDuration.interval }}
+
+---
+
+apiVersion: flagger.app/v1beta1
+kind: MetricTemplate
+metadata:
+  name: latency
+spec:
+  provider:
+    type: prometheus
+    address: http://prometheus.istio-system:9090
+  query: |
+    histogram_quantile(
+        0.99,
+        sum(
+            rate(
+                istio_request_duration_milliseconds_bucket{
+                    reporter="destination",
+                    destination_workload_namespace="{{ "{{" }} namespace {{ "}}" }}",
+                    destination_workload=~"{{ "{{" }} target {{ "}}" }}"
+                }[{{ "{{" }} interval {{ "}}" }}]
+            )
+        ) by (le)
+    )
 
 ---
 
