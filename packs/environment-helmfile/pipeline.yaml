@@ -1,0 +1,145 @@
+extends:
+  import: classic
+  file: pipeline.yaml
+agent:
+  label: jenkins-go
+  container: jenkinsxio/jenkins-x-installer:0.0.27
+pipelines:
+  release:
+    pipeline:
+      agent:
+        image: jenkinsxio/jenkins-x-installer:0.0.27
+      stages:
+      - name: release
+        options:
+          containerOptions:
+            env:
+            - name: HELM_PLUGINS
+              value: "/root/.cache/helm/plugins"
+        steps:
+        - args:
+          - step
+          - git
+          - validate
+          command: jx
+          dir: /workspace/source
+          name: validate-git
+        - args:
+          - step
+          - verify
+          - preinstall
+          - --disable-verify-packages
+          - --provider-values-dir="kubeProviders"
+          command: jx
+          dir: /workspace/source
+          name: verify-preinstall
+        - args:
+          - upgrade
+          - crd
+          command: jx
+          name: install-jx-crds
+        - args:
+          - step
+          - create
+          - helmfile
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
+          command: jx
+          dir: /workspace/source
+          name: generate-helmfile
+        - args:
+          - sync
+          command: helmfile
+          dir: /workspace/source/system
+          name: helmfile-system
+        - args:
+          - step
+          - verify
+          - ingress
+          - --ingress-namespace=nginx
+          - --ingress-service=nginx-ingress-controller
+          command: jx
+          dir: /workspace/source
+          name: verify-ingress
+        - args:
+          - sync
+          command: helmfile
+          dir: /workspace/source/apps
+          name: helmfile-apps
+        - args:
+          - step
+          - git
+          - credentials
+          - -o
+          - /builder/home/git/credentials
+          command: jx
+          dir: /workspace/source
+          name: git-creds
+        - args:
+          - step
+          - verify
+          - env
+          command: jx
+          dir: /workspace/source
+          name: verify-jenkins-x-environment
+        - args:
+          - step
+          - scheduler
+          - config
+          - apply
+          - --direct=true
+          command: jx
+          dir: /workspace/source
+          name: install-pipelines
+        - args:
+          - update
+          - webhooks
+          - --verbose
+          - --warn-on-fail
+          command: jx
+          dir: /workspace/source
+          name: update-webhooks
+        - args:
+          - step
+          - verify
+          - install
+          - --pod-wait-time
+          - 30m
+          command: jx
+          dir: /workspace/source
+          name: verify-installation
+
+  pullRequest:
+    pipeline:
+      agent:
+        image: jenkinsxio/jenkins-x-installer:0.0.27
+      stages:
+      - name: pr-checks
+        options:
+          containerOptions:
+            env:
+            - name: HELM_PLUGINS
+              value: "/root/.cache/helm/plugins"
+        steps:
+        - args:
+          - step
+          - create
+          - helmfile
+          - --values
+          - ../jx-requirements.values.yaml.gotmpl
+          command: jx
+          dir: /workspace/source
+          name: create-helmfile
+        - args:
+          - lint
+          command: helmfile
+          dir: /workspace/source/system
+          name: lint-helmfile-system
+        - args:
+          - lint
+          command: helmfile
+          dir: /workspace/source/apps
+          name: lint-helmfile-apps
+
+
+

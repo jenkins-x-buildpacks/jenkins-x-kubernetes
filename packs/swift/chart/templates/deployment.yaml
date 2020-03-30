@@ -1,6 +1,6 @@
 {{- if .Values.knativeDeploy }}
 {{- else }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "fullname" . }}
@@ -8,7 +8,13 @@ metadata:
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     draft: {{ default "draft-app" .Values.draft }}
 spec:
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+{{- if .Values.hpa.enabled }}
+{{- else }}
   replicas: {{ .Values.replicaCount }}
+{{- end }}
   template:
     metadata:
       labels:
@@ -28,6 +34,8 @@ spec:
         - name: {{ $pkey }}
           value: {{ quote $pval }}
 {{- end }}
+        envFrom:
+{{ toYaml .Values.envFrom | indent 10 }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         resources:
