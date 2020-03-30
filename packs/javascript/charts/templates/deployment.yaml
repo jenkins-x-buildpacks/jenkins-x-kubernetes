@@ -24,10 +24,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
-{{- range $pkey, $pval := .Values.env }}
-        - name: {{ $pkey }}
-          value: {{ quote $pval }}
-{{- end }}
+{{ toYaml .Values.env | indent 8 }}
         ports:
         - containerPort: {{ .Values.service.internalPort }}
         livenessProbe:
