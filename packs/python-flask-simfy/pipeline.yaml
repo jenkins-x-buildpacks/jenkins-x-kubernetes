@@ -29,6 +29,13 @@ pipelines:
 
   release:
     build:
+      preSteps:
+        - comment: install test dependencies
+          name: test-dependencies
+          sh: pip3 install -r ./requirements/dev.txt
+        - comment: run unit tests
+          name: unit-test
+          sh: py.test
       steps:
       - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
         name: container-build
