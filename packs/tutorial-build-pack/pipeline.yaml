@@ -6,6 +6,8 @@ pipelines:
       steps:
       - sh: echo "this is custom pull request build stage"
         name: custom_pullrequest_build_step
+      - sh:  mvn sonar:sonar -Dsonar.host.url=http://18.210.22.128:9000 -Dsonar.login=b10eff7e52549ebc35913e637475b411d186d469
+        name: custom_sonar_build_step
     postBuild:
       steps:
       - sh: echo "this is custom pull request postbuild" 
