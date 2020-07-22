@@ -10,9 +10,9 @@ pipelines:
   release:
     build:
       steps:
-        - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_USER -f /builder/home/basic-auth-user.json
+        - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_USER -f /tekton/home/basic-auth-user.json
           name: basic-auth-username
-        - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_PASS -f /builder/home/basic-auth-pass.json
+        - sh: jx step credential -s jenkins-x-chartmuseum -k BASIC_AUTH_PASS -f /tekton/home/basic-auth-pass.json
           name: basic-auth-password
         - sh: make release
           name: release
