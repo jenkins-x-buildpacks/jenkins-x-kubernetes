@@ -29,10 +29,7 @@ spec:
         env:
         - name: TARGET_SERVICE_NAME
           value: {{ .Chart.Name | replace "-training" "-service"}}
-{{- range $pkey, $pval := .Values.env }}
-        - name: {{ $pkey }}
-          value: {{ quote $pval }}
-{{- end }}
+{{ toYaml .Values.env | indent 10 }}
         envFrom:
 {{ toYaml .Values.envFrom | indent 10 }}
         ports:
