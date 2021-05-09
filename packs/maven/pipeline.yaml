@@ -24,7 +24,10 @@ pipelines:
 
   release:
     build:
+      replace: true
       steps:
+      - sh: mvn clean package
+        name: mvn-install
       - sh: skaffold version
         name: skaffold-version
       - sh: export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml
